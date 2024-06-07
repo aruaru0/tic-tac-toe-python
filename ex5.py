@@ -81,24 +81,6 @@ def think_stop2(board, turn) :
     return pos[sel]
 
 
-
-# 負けない様ににする
-def think_stop2(board, turn) :
-    pos = []
-    for i in range(3):
-        for j in range(3) :
-            if board[i][j] != 0 : continue
-            board[i][j] = -turn
-            if  check_win(board) == -turn :
-                board[i][j] = 0
-                return (j, i)
-
-            board[i][j] = 0
-            pos.append((j, i))
-        
-    sel = random.randint(0, len(pos)-1)
-    return pos[sel]
-
 # 深さ優先探索で、最終的な勝者を返す
 def think(board, turn) :
     # 9マス全てが埋まっているかどうか確認
