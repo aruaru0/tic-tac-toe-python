@@ -1,3 +1,5 @@
+import random
+
 # 人vs人完成
 def print_board(board):
     print("-"*20)
@@ -38,6 +40,64 @@ def check_win(board) :
         return board[0][2]
 
     return 0
+
+
+
+# 最初に見つけた場所に置く
+def think_seq(board) :
+    pos = []
+    for i in range(3):
+        for j in range(3) :
+            if board[i][j] == 0 : return (j, i)
+        
+    return (0,0)
+
+# ランダムに置く場所を決める
+def think_random(board) :
+    pos = []
+    for i in range(3):
+        for j in range(3) :
+            if board[i][j] == 0 : pos.append((j, i))
+        
+    sel = random.randint(0, len(pos)-1)
+    return pos[sel]
+
+
+# 負けない様ににする
+def think_stop2(board, turn) :
+    pos = []
+    for i in range(3):
+        for j in range(3) :
+            if board[i][j] != 0 : continue
+            board[i][j] = -turn
+            if  check_win(board) == -turn :
+                board[i][j] = 0
+                return (j, i)
+
+            board[i][j] = 0
+            pos.append((j, i))
+        
+    sel = random.randint(0, len(pos)-1)
+    return pos[sel]
+
+
+
+# 負けない様ににする
+def think_stop2(board, turn) :
+    pos = []
+    for i in range(3):
+        for j in range(3) :
+            if board[i][j] != 0 : continue
+            board[i][j] = -turn
+            if  check_win(board) == -turn :
+                board[i][j] = 0
+                return (j, i)
+
+            board[i][j] = 0
+            pos.append((j, i))
+        
+    sel = random.randint(0, len(pos)-1)
+    return pos[sel]
 
 # 深さ優先探索で、最終的な勝者を返す
 def think(board, turn) :
@@ -114,7 +174,10 @@ for i in range(9) :
                 break
         # x, y, _ = think(board, 1)
     else:
-        x, y, _ = think(board, 1)
+        # x, y, _ = think(board, 1)
+        # x, y = think_random(board)
+        # x, y = think_seq(board)
+        x, y = think_stop2(board, 1)
 
     if i%2 == 0 :
         board[y][x] = -1
